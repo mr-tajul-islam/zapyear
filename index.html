@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Zapyear, a minimal year progress live wallpaper for Lively Wallpaper.">
+    <title>Zapyear</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="wallpaper" aria-labelledby="yearLabel">
+      <section class="content" aria-label="Current year progress">
+        <header class="hero">
+          <p class="eyebrow" id="fullDate">Loading date</p>
+          <h1 id="yearLabel">----</h1>
+          <div class="day-counts" aria-label="Year day counts">
+            <p><strong id="daysPassed">--</strong> days passed</p>
+            <p><strong id="daysRemaining">--</strong> days remaining</p>
+          </div>
+        </header>
+
+        <section class="calendar-section" aria-label="Year calendar">
+          <div class="weekday-labels" aria-hidden="true">
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+          </div>
+          <div class="calendar-wrap">
+            <div class="calendar-grid" id="calendarGrid" role="grid" aria-label="Daily progress grid"></div>
+          </div>
+        </section>
+
+        <section class="progress-section" aria-label="Year progress">
+          <p class="progress-label progress-label-completed" id="completedPercent">-- completed</p>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p class="progress-label progress-label-remaining" id="remainingPercent">-- remaining</p>
+        </section>
+
+        <p class="message" id="motivation">Make today count.</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

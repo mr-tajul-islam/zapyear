@@ -1,0 +1,14 @@
+{
+  "AppVersion": "1.0.0.0",
+  "Title": "Zapyear",
+  "Thumbnail": "",
+  "Preview": "",
+  "Desc": "A minimal yearly day grid and progress bar live wallpaper.",
+  "Author": "Zapyear",
+  "License": "MIT",
+  "Contact": "",
+  "Type": 1,
+  "FileName": "index.html",
+  "Arguments": "",
+  "IsAbsolutePath": false
+}
