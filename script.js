@@ -23,6 +23,11 @@
     daysRemaining: document.getElementById("daysRemaining"),
     completedPercent: document.getElementById("completedPercent"),
     remainingPercent: document.getElementById("remainingPercent"),
+    todayRemainingPercent: document.getElementById("todayRemainingPercent"),
+    todayCompletedPercent: document.getElementById("todayCompletedPercent"),
+    todayProgressTrack: document.getElementById("todayProgressTrack"),
+    todayProgressFill: document.getElementById("todayProgressFill"),
+    todayRemainingTime: document.getElementById("todayRemainingTime"),
     calendarGrid: document.getElementById("calendarGrid"),
     progressFill: document.getElementById("progressFill"),
     motivation: document.getElementById("motivation")
@@ -115,6 +120,47 @@
       remaining: remainingRounded.toFixed(1),
       width: completed.toFixed(4)
     };
+  }
+
+  function getDurationParts(milliseconds) {
+    var totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+
+    return {
+      hours: Math.floor(totalSeconds / 3600),
+      minutes: Math.floor(totalSeconds % 3600 / 60),
+      seconds: totalSeconds % 60
+    };
+  }
+
+  function getTodayProgress(currentDate) {
+    var startOfToday = startOfLocalDay(currentDate);
+    var startOfTomorrow = addDays(startOfToday, 1);
+    var totalDuration = startOfTomorrow - startOfToday;
+    var timeElapsed = Math.min(Math.max(currentDate - startOfToday, 0), totalDuration);
+    var timeRemaining = Math.max(startOfTomorrow - currentDate, 0);
+    var completedPercentage = totalDuration > 0 ? timeElapsed / totalDuration * 100 : 100;
+    var remainingPercentage = Math.max(0, 100 - completedPercentage);
+    var elapsedParts = getDurationParts(timeElapsed);
+    var remainingParts = getDurationParts(timeRemaining);
+
+    return {
+      completedPercentage: Math.min(Math.max(completedPercentage, 0), 100),
+      remainingPercentage: Math.min(Math.max(remainingPercentage, 0), 100),
+      elapsedHours: elapsedParts.hours,
+      elapsedMinutes: elapsedParts.minutes,
+      elapsedSeconds: elapsedParts.seconds,
+      remainingHours: remainingParts.hours,
+      remainingMinutes: remainingParts.minutes,
+      remainingSeconds: remainingParts.seconds
+    };
+  }
+
+  function formatDuration(hours, minutes, seconds) {
+    return [
+      String(hours).padStart(2, "0") + "h",
+      String(minutes).padStart(2, "0") + "m",
+      String(seconds).padStart(2, "0") + "s"
+    ].join(" ");
   }
 
   function formatSquareDate(date) {
@@ -216,6 +262,27 @@
       progress.dayIndex < progress.daysInYear;
   }
 
+  function renderTodayProgress(now) {
+    var progress = getTodayProgress(now);
+    var completed = progress.completedPercentage.toFixed(1);
+    var remaining = progress.remainingPercentage.toFixed(1);
+    var remainingTime = formatDuration(
+      progress.remainingHours,
+      progress.remainingMinutes,
+      progress.remainingSeconds
+    );
+
+    elements.todayRemainingPercent.textContent = "Remaining: " + remaining + "%";
+    elements.todayCompletedPercent.textContent = "Completed: " + completed + "%";
+    elements.todayProgressFill.style.width = progress.completedPercentage.toFixed(4) + "%";
+    elements.todayProgressTrack.setAttribute("aria-valuenow", completed);
+    elements.todayProgressTrack.setAttribute(
+      "aria-valuetext",
+      completed + "% completed, " + remaining + "% remaining"
+    );
+    elements.todayRemainingTime.textContent = remainingTime + " remaining";
+  }
+
   function render() {
     var now = new Date();
     var progress = getYearProgress(now);
@@ -239,6 +306,7 @@
     elements.completedPercent.textContent = percentages.completed + "% completed";
     elements.remainingPercent.textContent = percentages.remaining + "% remaining";
     elements.progressFill.style.width = percentages.width + "%";
+    renderTodayProgress(now);
     state.lastDateKey = progress.dateKey;
   }
 
@@ -335,8 +403,14 @@
     }
 
     render();
-    state.updateTimer = window.setInterval(render, 60000);
+    state.updateTimer = window.setInterval(render, 1000);
   }
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+      render();
+    }
+  });
 
   window.addEventListener("beforeunload", function () {
     if (state.updateTimer) {

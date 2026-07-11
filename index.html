@@ -43,6 +43,28 @@
         </section>
 
         <p class="message" id="motivation">Make today count.</p>
+
+        <section class="today-progress-section" aria-label="Today progress">
+          <div class="today-progress-row">
+            <p class="today-progress-label today-progress-label-remaining" id="todayRemainingPercent">Remaining: --.-%</p>
+            <div
+              class="progress-track today-progress-track"
+              id="todayProgressTrack"
+              role="progressbar"
+              aria-label="Today completed"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div class="progress-fill today-progress-fill" id="todayProgressFill"></div>
+            </div>
+            <p class="today-progress-label today-progress-label-completed" id="todayCompletedPercent">Completed: --.-%</p>
+          </div>
+          <p class="today-countdown" id="todayCountdown">
+            <span class="today-hourglass" aria-hidden="true">⌛</span>
+            <span id="todayRemainingTime">--h --m --s remaining</span>
+          </p>
+        </section>
       </section>
     </main>
 

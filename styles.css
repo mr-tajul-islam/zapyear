@@ -230,6 +230,63 @@ h1 {
   display: none;
 }
 
+.today-progress-section {
+  display: grid;
+  gap: 10px;
+  width: min(920px, 100%);
+  margin-top: clamp(10px, 2vh, 18px);
+}
+
+.today-progress-row {
+  display: grid;
+  grid-template-columns: minmax(126px, max-content) minmax(180px, 1fr) minmax(126px, max-content);
+  gap: clamp(12px, 2.3vw, 28px);
+  align-items: center;
+}
+
+.today-progress-label {
+  min-width: 0;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.today-progress-label-remaining {
+  color: var(--muted-light);
+  text-align: right;
+}
+
+.today-progress-label-completed {
+  color: #FF9A1F;
+  text-align: left;
+}
+
+.today-progress-fill {
+  background: #FF9A1F;
+  transition: width 700ms ease;
+}
+
+.today-countdown {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: color-mix(in srgb, var(--muted) 88%, var(--text));
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.today-hourglass {
+  display: inline-block;
+  transform-origin: 50% 50%;
+  animation: hourglassFlip 1.4s ease-in-out infinite;
+}
+
 @keyframes currentPulse {
   0% {
     opacity: 0.42;
@@ -243,6 +300,22 @@ h1 {
   }
 }
 
+@keyframes hourglassFlip {
+  0%,
+  45% {
+    transform: rotate(0deg);
+  }
+
+  50%,
+  95% {
+    transform: rotate(180deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -251,6 +324,10 @@ h1 {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
+  }
+
+  .today-hourglass {
+    animation: none !important;
   }
 }
 
@@ -273,6 +350,10 @@ h1 {
 
   .message {
     margin-top: 14px;
+  }
+
+  .today-progress-section {
+    margin-top: 8px;
   }
 }
 
@@ -305,5 +386,36 @@ h1 {
 
   .progress-label-remaining {
     text-align: right;
+  }
+
+  .today-progress-section {
+    gap: 8px;
+  }
+
+  .today-progress-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px 12px;
+  }
+
+  .today-progress-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .today-progress-label {
+    grid-row: 1;
+    font-size: 0.86rem;
+  }
+
+  .today-progress-label-remaining {
+    text-align: left;
+  }
+
+  .today-progress-label-completed {
+    text-align: right;
+  }
+
+  .today-countdown {
+    font-size: 0.86rem;
   }
 }
